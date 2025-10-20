@@ -1,31 +1,30 @@
 import { Injectable } from "@angular/core";
-
-declare const window: any;
+import { DualStorageService } from './dual-storage.service';
 
 @Injectable({ providedIn: 'root' })
 export class ExpenseService {
 
-  // getRecords(): Promise<any[]> {
-  //   return window.electronAPI.getRecords();
-  // }
-getRecords(): Promise<any[]> {
-  if (!window.electronAPI) throw new Error('Electron API not available!');
-  return window.electronAPI.getRecords();
-}
-addRecord(record: any): Promise<any> {
-  if (!window.electronAPI) {
-    console.error('Electron API not available!');
-    return Promise.reject('Electron API missing');
-  }
-  return window.electronAPI.addRecord(record);
-}
+  constructor(private dualStorage: DualStorageService) {}
 
-
-  updateRecord(record: any): Promise<any> {
-    return window.electronAPI.updateRecord(record);
+  // Initialize database
+  async init(): Promise<void> {
+    await this.dualStorage.initDB();
   }
 
-  deleteRecord(id: number): Promise<any> {
-    return window.electronAPI.deleteRecord(id);
+  // Public methods
+  async getRecords(): Promise<any[]> {
+    return await this.dualStorage.getRecords();
+  }
+
+  async addRecord(record: any): Promise<any> {
+    return await this.dualStorage.addRecord(record);
+  }
+
+  async updateRecord(record: any): Promise<any> {
+    return await this.dualStorage.updateRecord(record);
+  }
+
+  async deleteRecord(id: number): Promise<any> {
+    return await this.dualStorage.deleteRecord(id);
   }
 }

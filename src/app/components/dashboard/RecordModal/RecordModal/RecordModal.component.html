@@ -8,29 +8,52 @@
       <div class="modal-body">
         <form [formGroup]="form">
           <div class="mb-3">
-            <label class="form-label">Date</label>
+            <label class="form-label">📅 Date</label>
             <input type="date" class="form-control" formControlName="date">
           </div>
+
           <div class="mb-3">
-            <label class="form-label">Type</label>
+            <label class="form-label">💸 Type</label>
             <select class="form-select" formControlName="type">
               <option value="Income">Income</option>
               <option value="Expense">Expense</option>
             </select>
           </div>
+
           <div class="mb-3">
-            <label class="form-label">Amount</label>
-            <input type="number" class="form-control" formControlName="amount">
+            <label class="form-label">💰 Amount</label>
+            <input type="number" class="form-control" formControlName="amount" placeholder="PKR">
           </div>
+
+          <!-- ALWAYS SHOW - Category Field -->
           <div class="mb-3">
-            <label class="form-label">Note</label>
-            <input type="text" class="form-control" formControlName="note">
+            <label class="form-label">📂 Category (Always Visible)</label>
+            <input type="text" class="form-control" formControlName="note"
+              placeholder="Karachi Committee, Bilal Committee, etc." list="categories">
+
+            <datalist id="categories">
+              <option value="Karachi Committee">
+              <option value="Bilal Committee">
+              <option value="Karam Committee">
+              <option value="Medicine">
+              <option value="Chakr Ka Kharcha">
+              <option value="Weekend Expenses">
+              <option value="Ghar Ka Kharcha">
+              <option value="Khana">
+              <option value="Transport">
+              <option value="Bijli Bill">
+              <option value="Gas Bill">
+              <option value="Shopping">
+              <option value="Entertainment">
+              <option value="Other">
+            </datalist>
           </div>
+
         </form>
       </div>
       <div class="modal-footer">
-        <button class="btn btn-secondary" (click)="close()">Cancel</button>
-        <button class="btn btn-primary" [disabled]="form.invalid" (click)="save()">Save</button>
+        <button class="btn btn-secondary" (click)="close()">❌ Cancel</button>
+        <button class="btn btn-primary" [disabled]="form.invalid" (click)="save()">💾 Save</button>
       </div>
     </div>
   </div>

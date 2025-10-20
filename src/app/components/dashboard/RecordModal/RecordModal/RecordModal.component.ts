@@ -5,7 +5,7 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 @Component({
   selector: 'app-RecordModal',
   templateUrl: './RecordModal.component.html',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, CommonModule],
   styleUrls: ['./RecordModal.component.css']
 })
 export class RecordModalComponent {
@@ -30,14 +30,12 @@ export class RecordModalComponent {
     }
   }
 
-//  addRecord(record: any): Promise<any> {
-//     return window.electronAPI.addRecord(record);
-//   }
-save() {
-  if (this.form.valid) {
-    this.onSave.emit(this.form.value);
+  save() {
+    if (this.form.valid) {
+      this.onSave.emit(this.form.value);
+    }
   }
-}
+
   close() {
     this.onClose.emit();
   }

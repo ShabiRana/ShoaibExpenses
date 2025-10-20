@@ -1,24 +1,16 @@
 import { Injectable } from '@angular/core';
+import { DualStorageService } from './dual-storage.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
   
-  private isElectron = !!(window && (window as any).electronAPI);
+  constructor(private dualStorage: DualStorageService) {}
 
   async login(credentials: { username: string; password: string }): Promise<boolean> {
-    // Debugging
-    console.log('Electron API available:', this.isElectron);
-    
-    if (!this.isElectron) {
-      console.warn('Running in browser mode - using mock login');
-      // Temporary mock login for testing
-      return credentials.username === 'admin' && credentials.password === '1234';
-    }
-
     try {
-      const result = await (window as any).electronAPI.loginUser(credentials);
+      const result = await this.dualStorage.loginUser(credentials);
       return result.success;
     } catch (error) {
       console.error('Login error:', error);

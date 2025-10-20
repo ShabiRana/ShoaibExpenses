@@ -161,17 +161,34 @@ createExpensePieChart() {
   const ctx = document.getElementById('expensePieChart') as HTMLCanvasElement;
   if (!ctx) return;
 
+  // Roman Urdu categories ke liye colors
+  const categoryColors: { [key: string]: string } = {
+    'Karachi Committee': '#FF6384',      // Red
+    'Bilal Committee': '#36A2EB',        // Blue  
+    'Karam Committee': '#FFCE56',        // Yellow
+    'Medicine': '#4BC0C0',               // Teal
+    'Chakr Ka Kharcha': '#9966FF',       // Purple
+    'Weekend Expenses': '#FF9F40',       // Orange
+    'Ghar Ka Kharcha': '#FF6384',        // Pink
+    'Khana': '#C9CBCF',                  // Gray
+    'Transport': '#4BC0C0',              // Cyan
+    'Bijli Bill': '#FFCE56',             // Light Orange
+    'Gas Bill': '#36A2EB',               // Light Blue
+    'Shopping': '#9966FF',               // Light Purple
+    'Entertainment': '#FF9F40',          // Light Yellow
+    'Other': '#E7E9ED'                   // Light Gray
+  };
+
+  const labels = Object.keys(expenseByCategory);
+  const backgroundColors = labels.map(label => categoryColors[label] || '#E7E9ED');
+
   this.expensePieChart = new Chart(ctx, {
     type: 'pie',
     data: {
-      labels: Object.keys(expenseByCategory),
+      labels: labels,
       datasets: [{
         data: Object.values(expenseByCategory),
-        backgroundColor: [
-          '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', 
-          '#9966FF', '#FF9F40', '#FF6384', '#C9CBCF',
-          '#FF6384', '#36A2EB'
-        ],
+        backgroundColor: backgroundColors,
         borderWidth: 1
       }]
     },
@@ -183,7 +200,7 @@ createExpensePieChart() {
         },
         title: {
           display: true,
-          text: 'Expense Distribution'
+          text: 'Expense Distribution by Category'
         },
         tooltip: {
           callbacks: {
@@ -196,7 +213,7 @@ createExpensePieChart() {
               }
               
               const percentage = ((value / total) * 100).toFixed(1);
-              return `PKR ${value.toLocaleString()} (${percentage}%)`;
+              return `${context.label}: PKR ${value.toLocaleString()} (${percentage}%)`;
             }
           }
         }
@@ -204,6 +221,7 @@ createExpensePieChart() {
     }
   });
 }
+
 createEmptyExpenseChart() {
     const ctx = document.getElementById('expensePieChart') as HTMLCanvasElement;
     if (!ctx) return;
@@ -354,7 +372,26 @@ createMonthlyTrendChart() {
     
     return { months, income, expense };
   }
-
+getCategoryBadgeClass(category: string): string {
+  const colorMap: { [key: string]: string } = {
+    'Karachi Committee': 'bg-primary',
+    'Bilal Committee': 'bg-info text-dark',
+    'Karam Committee': 'bg-warning text-dark',
+    'Medicine': 'bg-danger',
+    'Chakr Ka Kharcha': 'bg-secondary',
+    'Weekend Expenses': 'bg-success',
+    'Ghar Ka Kharcha': 'bg-dark',
+    'Khana': 'bg-primary',
+    'Transport': 'bg-info text-dark',
+    'Bijli Bill': 'bg-warning text-dark',
+    'Gas Bill': 'bg-danger',
+    'Shopping': 'bg-success',
+    'Entertainment': 'bg-secondary',
+    'Other': 'bg-dark'
+  };
+  
+  return colorMap[category] || 'bg-secondary';
+}
   addNewRecord() {
     const modalRef = this.modalService.open(RecordModalComponent, {
       size: 'xl',
