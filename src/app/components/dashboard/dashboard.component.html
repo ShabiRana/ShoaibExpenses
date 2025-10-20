@@ -1,0 +1,156 @@
+<div class="container py-4">
+  <!-- Page Title -->
+  <h2 class="text-center fw-bold text-primary mb-4">
+    💰 Shoaib Expense Tracker
+  </h2>
+
+  <!-- Summary Cards -->
+  <div class="row g-3 mb-4 text-center">
+    <div class="col-md-3">
+      <div class="card border-success shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title text-muted mb-2">Total Income</h5>
+          <h3 class="text-success fw-bold">{{ totalIncome | currency:'PKR ' }}</h3>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-3">
+      <div class="card border-danger shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title text-muted mb-2">Total Expense</h5>
+          <h3 class="text-danger fw-bold">{{ totalExpense | currency:'PKR ' }}</h3>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-3">
+      <div class="card border-primary shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title text-muted mb-2">Savings</h5>
+          <h3 class="text-primary fw-bold">{{ savings | currency:'PKR ' }}</h3>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-3">
+      <div class="card border-warning shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title text-muted mb-2">Transactions</h5>
+          <h3 class="text-warning fw-bold">{{ records.length }}</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Charts Section -->
+  <div class="row mb-4">
+    <!-- Income vs Expense Chart -->
+    <div class="col-md-6 mb-3">
+      <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white fw-semibold">
+          📈 Income vs Expense
+        </div>
+        <div class="card-body">
+          <canvas id="incomeExpenseChart" width="400" height="200"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Expense Distribution Chart -->
+    <div class="col-md-6 mb-3">
+      <div class="card shadow-sm">
+        <div class="card-header bg-success text-white fw-semibold">
+          🥧 Expense Categories
+        </div>
+        <div class="card-body">
+          <canvas id="expensePieChart" width="400" height="200"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Monthly Trend Chart -->
+    <div class="col-12 mb-3">
+      <div class="card shadow-sm">
+        <div class="card-header bg-info text-white fw-semibold">
+          📅 Monthly Financial Trend
+        </div>
+        <div class="card-body">
+          <canvas id="monthlyTrendChart" width="400" height="150"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Savings Progress -->
+    <div class="col-12 mb-3">
+      <div class="card shadow-sm">
+        <div class="card-header bg-warning text-dark fw-semibold">
+          💰 Savings Progress
+        </div>
+        <div class="card-body">
+          <div class="progress" style="height: 30px;">
+            <div class="progress-bar bg-success progress-bar-striped progress-bar-animated" 
+                 [style.width]="savingsPercentage + '%'">
+              <strong>{{ savingsPercentage.toFixed(1) }}% Savings</strong>
+            </div>
+          </div>
+          <div class="mt-2 text-center">
+            <small class="text-muted">
+              Savings: {{ savings | currency:'PKR ' }} | 
+              Income: {{ totalIncome | currency:'PKR ' }}
+            </small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Table -->
+  <div class="card shadow-sm">
+    <div class="card-header bg-primary text-white fw-semibold d-flex justify-content-between align-items-center">
+      <span>Transaction History</span>
+      <button class="btn btn-light btn-sm fw-semibold" (click)="addNewRecord()">
+        ➕ Add Record
+      </button>
+    </div>
+    <div class="table-responsive">
+      <table class="table table-hover table-striped mb-0 align-middle">
+        <thead class="table-light">
+          <tr>
+            <th>Date</th>
+            <th>Type</th>
+            <th>Amount (PKR)</th>
+            <th>Note</th>
+            <th class="text-center">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let record of records">
+            <td>{{ record.date }}</td>
+            <td>
+              <span [ngClass]="{
+                  'text-success fw-bold': record.type === 'Income',
+                  'text-danger fw-bold': record.type === 'Expense'
+                }">
+                {{ record.type }}
+              </span>
+            </td>
+            <td>{{ record.amount | currency:'PKR ' }}</td>
+            <td>{{ record.note }}</td>
+            <td class="text-center">
+              <button class="btn btn-outline-primary btn-sm me-2" (click)="editRecord(record)">
+                ✏️
+              </button>
+              <button class="btn btn-outline-danger btn-sm" (click)="deleteRecord(record)">
+                🗑️
+              </button>
+            </td>
+          </tr>
+          <tr *ngIf="records.length === 0">
+            <td colspan="5" class="text-center text-muted py-3">No records found.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
