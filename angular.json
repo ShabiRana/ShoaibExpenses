@@ -19,6 +19,7 @@
           "options": {
             "outputPath": "dist/shoaib-expenses/browser",
               "baseHref": "/",
+               "deployUrl": "/",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [

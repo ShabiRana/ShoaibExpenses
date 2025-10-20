@@ -15,7 +15,7 @@
     "electron:win": "start ng serve && wait-on http://localhost:4200 && electron .",
     "electron:build": "npm run build && npx electron .",
     "electron:wait": "wait-on http://localhost:4200 && electron .",
-      "build:vercel": "ng build --configuration production"
+     "vercel-build": "ng build --configuration production --base-href /"
   },
   "private": true,
   "dependencies": {
